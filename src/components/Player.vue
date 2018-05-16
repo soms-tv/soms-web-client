@@ -5,8 +5,11 @@
 </template>
 
 <script>
+import HostController from '../player_controllers/host.controller.js';
+import ViewerController from '../player_controllers/viewer.controller.js';
+
 export default {
-  name: 'player' 
+  name: 'player'
 }
 </script>
 
