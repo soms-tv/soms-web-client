@@ -39,6 +39,7 @@ export default {
       },
       joinRoom: function(room) {
         console.log(`Joining room ${room}`);
+        this.socket.emit('join', room);
         this.$emit('join-room', room);
       },
       newRoom: '',
