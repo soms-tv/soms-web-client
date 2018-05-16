@@ -1,6 +1,6 @@
 <template>
   <div>
-    <room-list v-bind:socket="socket"></room-list>
+    <room-list v-bind:socket="socket" v-on:join-room="updateRoom"></room-list>
     <room v-if="room !== 'lobby'"></room>
   </div>
 </template>
@@ -14,6 +14,9 @@ export default {
   name: 'app',
   data: function()  {
     return {
+      'updateRoom': room => {
+        this.room = room;
+      },
       'room': 'lobby',
       'socket': socket
     };

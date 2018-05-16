@@ -4,6 +4,8 @@
     <ul>
       <li v-for="room of rooms" v-on:click="joinRoom(room)">{{room}}</li>
     </ul>
+    <input v-model="newRoom" placeholder="New Room" />
+    <button v-on:click="createRoom()">Create Room</button>
   </div>
 </template>
 
@@ -26,9 +28,20 @@ export default {
   },
   data: function() {
     return {
+      createRoom: function() {
+        const newRoom = this.newRoom;
+        if (this.rooms.indexOf(newRoom) !== -1) {
+          return;
+        }
+        this.rooms.push(newRoom);
+        this.socket.emit('room', newRoom);
+        this.$emit('join-room', newRoom);
+      },
       joinRoom: function(room) {
         console.log(`Joining room ${room}`);
+        this.$emit('join-room', room);
       },
+      newRoom: '',
       rooms: []
     };
   },
