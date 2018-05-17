@@ -2,7 +2,7 @@
   <div>
     <p>Own ID {{ me }}</p>
     <room-list v-bind:socket="socket" v-on:join-room="updateRoom"></room-list>
-    <room v-bind:name="room" v-bind:socket="socket" v-if="room !== 'lobby'"></room>
+    <room v-bind:me="me" v-bind:name="room" v-bind:socket="socket" v-if="room !== 'lobby'"></room>
   </div>
 </template>
 
