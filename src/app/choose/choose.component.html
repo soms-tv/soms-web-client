@@ -1,0 +1,65 @@
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="roleForm">
+    <form [formGroup]="roleForm">
+      <input formControlName="completed" hidden type="text" />
+      <ng-template matStepLabel>Choose a role</ng-template>
+      <mat-grid-list class="role-grid" cols="2" rowHeight="100px">
+        <mat-grid-tile
+            [colspan]="1"
+            [rowspan]="1">
+            <div class="role-container">
+              <mat-icon class="role-icon">tv</mat-icon>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile
+            [colspan]="1"
+            [rowspan]="1">
+            <div class="role-container">
+              <mat-icon class="role-icon">cast</mat-icon>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile
+            [colspan]="1"
+            [rowspan]="1">
+            <div class="role-container">
+              <button class="role-title" (click)="chooseRole(true)" mat-button>View a stream</button>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile
+            [colspan]="1"
+            [rowspan]="1">
+            <div class="role-container">
+              <button class="role-title" (click)="chooseRole(false)" mat-button>Host a stream</button>
+            </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="serverForm">
+    <form class="form-margin" [formGroup]="serverForm">
+      <ng-template matStepLabel>Connect to a server</ng-template>
+      <mat-form-field class="full-width">
+        <input formControlName="serverAddress" matInput placeholder="Server address" required type="url">
+        <mat-error *ngIf="badServer">
+          We can't seem to connect to this server. Please make sure this server is running SOMS
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <textarea formControlName="authenticationKey" matInput placeholder="Authentication key (optional)"></textarea>
+        <mat-error *ngIf="badKey && serverForm.controls.authenticationKey.length === 0">
+          This server requires a key to connect. Please supply one here
+        </mat-error>
+        <mat-error *ngIf="badKey && serverForm.controls.authenticationKey.length !== 0">
+          This key was not accepted by the server. Double-check that the key is correct
+        </mat-error>
+      </mat-form-field>
+      <button (click)="connectToServer()" color="primary" mat-button>Connect to server</button>
+    </form>
+  </mat-step>
+  <mat-step>
+    <form class="form-margin" [formGroup]="roomForm">
+      <ng-template matStepLabel>Select a room</ng-template>
+      <p>Placeholder</p>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
