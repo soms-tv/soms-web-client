@@ -1,8 +1,17 @@
+.center-children {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
 .form-margin {
   margin: 0 15%;
 }
 .full-width {
   width: 100%;
+}
+.loading-message {
+  font-size: 1.8em;
+  padding-left: 2em;
 }
 .role-container {
   text-align: center;

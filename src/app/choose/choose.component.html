@@ -39,21 +39,29 @@
     <form class="form-margin" [formGroup]="serverForm">
       <ng-template matStepLabel>Connect to a server</ng-template>
       <mat-form-field class="full-width">
-        <input formControlName="serverAddress" matInput placeholder="Server address" required type="url">
+        <input (input)="badServer = false" [readonly]="connectingToServer" formControlName="serverAddress" matInput placeholder="Server address" required type="url">
         <mat-error *ngIf="badServer">
-          We can't seem to connect to this server. Please make sure this server is running SOMS
+          We can't seem to connect to SOMS on this server. Please make sure this server is up and running SOMS
         </mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <textarea formControlName="authenticationKey" matInput placeholder="Authentication key (optional)"></textarea>
-        <mat-error *ngIf="badKey && serverForm.controls.authenticationKey.length === 0">
+        <textarea [readonly]="connectingToServer" formControlName="authenticationKey" matInput placeholder="Authentication key (optional)"></textarea>
+        <mat-error *ngIf="badKey && serverForm.controls.authenticationKey.value.length === 0">
           This server requires a key to connect. Please supply one here
         </mat-error>
-        <mat-error *ngIf="badKey && serverForm.controls.authenticationKey.length !== 0">
+        <mat-error *ngIf="badKey && serverForm.controls.authenticationKey.value.length !== 0">
           This key was not accepted by the server. Double-check that the key is correct
         </mat-error>
       </mat-form-field>
-      <button (click)="connectToServer()" color="primary" mat-button>Connect to server</button>
+      <button (click)="connectToServer()" color="primary" [disabled]="connectingToServer" mat-button>Connect to server</button>
+      <div class="center-children" *ngIf="connectingToServer">
+        <mat-progress-spinner
+          class=""
+          color="primary"
+          mode="indeterminate">
+        </mat-progress-spinner>
+        <p class="loading-message">Connecting to server...</p>
+      </div>
     </form>
   </mat-step>
   <mat-step>

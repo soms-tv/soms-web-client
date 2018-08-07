@@ -3,11 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { NgModule } from '@angular/core';
 
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';;
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -35,6 +36,7 @@ import { ChooseComponent } from './choose/choose.component';
     MatGridListModule,
     MatIconModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     MatStepperModule,
     MatToolbarModule,
     ReactiveFormsModule
