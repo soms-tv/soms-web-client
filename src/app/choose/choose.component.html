@@ -39,17 +39,17 @@
     <form class="form-margin" [formGroup]="serverForm">
       <ng-template matStepLabel>Connect to a server</ng-template>
       <mat-form-field class="full-width">
-        <input (focus)="badServer = false" [readonly]="connectingToServer" formControlName="serverAddress" matInput placeholder="Server address" required type="url">
-        <mat-error *ngIf="badServer">
+        <input (focus)="badServer = false" [readonly]="connectingToServer" formControlName="serverAddress" matInput placeholder="Server address" required type="url" [errorStateMatcher]="serverErrorStateMatcher">
+        <mat-error>
           We can't seem to connect to SOMS on this server. Please make sure this server is up and running SOMS
         </mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <textarea [readonly]="connectingToServer" formControlName="authenticationKey" matInput placeholder="Authentication key (optional)"></textarea>
-        <mat-error *ngIf="badKey && serverForm.controls.authenticationKey.value.length === 0">
+        <textarea (focus)="badKey = false" [readonly]="connectingToServer" formControlName="authenticationKey" matInput placeholder="Authentication key (optional)" [errorStateMatcher]="keyErrorStateMatcher"></textarea>
+        <mat-error *ngIf="serverForm.controls.authenticationKey.value.length === 0">
           This server requires a key to connect. Please supply one here
         </mat-error>
-        <mat-error *ngIf="badKey && serverForm.controls.authenticationKey.value.length !== 0">
+        <mat-error *ngIf="serverForm.controls.authenticationKey.value.length !== 0">
           This key was not accepted by the server. Double-check that the key is correct
         </mat-error>
       </mat-form-field>

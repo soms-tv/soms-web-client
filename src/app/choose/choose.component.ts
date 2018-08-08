@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material';
 import { of } from 'rxjs';
+
+import { KeyErrorStateMatcher } from './key-error-state-matcher';
 
 @Component({
   selector: 'app-choose',
@@ -17,18 +20,25 @@ export class ChooseComponent implements OnInit {
   badKey = false;
   badServer = false;
   connectingToServer = false;
+  keyErrorStateMatcher: ErrorStateMatcher;
+  serverErrorStateMatcher: ErrorStateMatcher;
   socket: any;
   timeoutMilliseconds = 500;
   viewer: boolean;
 
-  constructor(private _formBuilder: FormBuilder) { }
+  constructor(private _formBuilder: FormBuilder) {
+    // The Key in KeyErrorStateMatcher is a key on the scope, distinct from the
+    // key being used to authenticate with the server
+    this.keyErrorStateMatcher = new KeyErrorStateMatcher(this, 'badKey');
+    this.serverErrorStateMatcher = new KeyErrorStateMatcher(this, 'badServer');
+  }
 
   ngOnInit() {
     this.roleForm = this._formBuilder.group({
       completed: ['', Validators.required]
     });
     this.serverForm = this._formBuilder.group({
-      serverAddress: ['', Validators.compose([Validators.required, () => { return this.badServer ? { 'badServer': true } : null; }])],
+      serverAddress: ['', Validators.required],
       authenticationKey: ['']
     });
     this.roomForm = this._formBuilder.group({
