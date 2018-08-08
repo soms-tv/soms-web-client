@@ -69,10 +69,26 @@ export class ChooseComponent implements OnInit {
     const socket = new WebSocket(serverAddress);
     this.connectingToServer = true;
     socket.onmessage = (messageEvent) => {
-      if (!messageEvent.data || typeof messageEvent.data !== 'string' || messageEvent.data.indexOf('soms') !== 0) {
+      if (!messageEvent.data || typeof messageEvent.data !== 'string') {
         connectionFailHandler();
+      } else if (messageEvent.data === 'soms requesting key') {
+        // Send key if requested
+        const baseKey = this.serverForm.controls.authenticationKey.value;
+        const key = baseKey ? baseKey.trim() : '';
+        socket.send(`soms-key: ${JSON.stringify({'key': key})}`);
+      } else if (messageEvent.data === 'soms accept') {
+        // Continue to rooms if connection completed
+        this.socket = socket;
+        this.stepper.next();
+      } else if (messageEvent.data === 'soms deny') {
+        // Display bad key message
+        socket.onerror = () => {};
+        this.badKey = true;
+        this.connectingToServer = false;
+        this.serverForm.patchValue({
+          serverAddress: serverAddress.trim()
+        });
       }
-      socket.send(this.serverForm.controls.authenticationKey.value.trim());
     };
     socket.onerror = connectionFailHandler;
     setTimeout(() => {
