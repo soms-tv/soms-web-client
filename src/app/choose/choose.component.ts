@@ -62,7 +62,7 @@ export class ChooseComponent implements OnInit {
       this.badServer = true;
       this.connectingToServer = false;
       this.serverForm.patchValue({
-        serverAddress = serverAddress.trim();
+        serverAddress: serverAddress.trim()
       });
     };
 
@@ -72,14 +72,14 @@ export class ChooseComponent implements OnInit {
       if (!messageEvent.data || typeof messageEvent.data !== 'string' || messageEvent.data.indexOf('soms') !== 0) {
         connectionFailHandler();
       }
-      socket.send(this.serverForm.controls.authenticationKey.trim());
+      socket.send(this.serverForm.controls.authenticationKey.value.trim());
     };
     socket.onerror = connectionFailHandler;
     setTimeout(() => {
       if (!this.connectingToServer) {
         return;
       }
-      this.timeout *= 1.5;
+      this.timeoutMilliseconds *= 1.5;
       connectionFailHandler();
     }, this.timeoutMilliseconds);
   }
