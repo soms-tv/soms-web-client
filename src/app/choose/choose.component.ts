@@ -19,9 +19,14 @@ export class ChooseComponent implements OnInit {
 
   badKey = false;
   badServer = false;
+  badRoomName = false;
+  badRoomPassword = false;
+
   connectingToServer = false;
   keyErrorStateMatcher: ErrorStateMatcher;
   serverErrorStateMatcher: ErrorStateMatcher;
+  roomNameErrorStateMatcher: ErrorStateMatcher;
+  roomPasswordErrorStateMatcher: ErrorStateMatcher;
   socket: any;
   timeoutMilliseconds = 500;
   viewer: boolean;
@@ -31,6 +36,8 @@ export class ChooseComponent implements OnInit {
     // key being used to authenticate with the server
     this.keyErrorStateMatcher = new KeyErrorStateMatcher(this, 'badKey');
     this.serverErrorStateMatcher = new KeyErrorStateMatcher(this, 'badServer');
+    this.roomNameErrorStateMatcher = new KeyErrorStateMatcher(this, 'badRoomName');
+    this.roomPasswordErrorStateMatcher = new KeyErrorStateMatcher(this, 'badRoomPassword');
   }
 
   ngOnInit() {
@@ -42,7 +49,8 @@ export class ChooseComponent implements OnInit {
       authenticationKey: ['']
     });
     this.roomForm = this._formBuilder.group({
-      thirdCtrl: ['', Validators.required]
+      roomName: ['', Validators.required],
+      roomPassword: ['']
     });
   }
 
@@ -109,4 +117,6 @@ export class ChooseComponent implements OnInit {
       connectionFailHandler();
     }, this.timeoutMilliseconds);
   }
+
+  handleRoomForm(): void { }
 }
