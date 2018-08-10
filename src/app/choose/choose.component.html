@@ -68,16 +68,19 @@
     <form class="form-margin" [formGroup]="roomForm">
       <ng-template matStepLabel>Select a room</ng-template>
         <mat-form-field class="full-width">
-          <input formControlName="roomName" matInput placeholder="Room name" required type="url" [errorStateMatcher]="roomNameErrorStateMatcher">
-          <mat-error *ngIf="viewer">
+          <input formControlName="roomName" (input)="badRoomName = false" matInput placeholder="Room name" required type="url" [errorStateMatcher]="roomNameErrorStateMatcher">
+          <mat-error *ngIf="roomForm.controls.roomName.value.length === 0">
+            Please enter a room name
+          </mat-error>
+          <mat-error *ngIf="viewer && roomForm.controls.roomName.value.length !== 0">
             Room does not exist
           </mat-error>
-          <mat-error *ngIf="host">
+          <mat-error *ngIf="!viewer && roomForm.controls.roomName.value.length !== 0">
             Room already exists
           </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input formControlName="roomPassword" matInput placeholder="Password (optional)" type="password" [errorStateMatcher]="roomPasswordErrorStateMatcher">
+          <input formControlName="roomPassword" (input)="badRoomPassword = false" matInput placeholder="Password (optional)" type="password" [errorStateMatcher]="roomPasswordErrorStateMatcher">
           <mat-error *ngIf="roomForm.controls.roomPassword.value.length === 0">
             This room requires a password
           </mat-error>
@@ -85,7 +88,7 @@
             Incorrect password
           </mat-error>
         </mat-form-field>
-        <button (click)="handleRoomForm()" color="primary" mat-button>{{ viewer ? 'Join' : 'Connect to' }} room</button>
+        <button (click)="handleRoomForm()" color="primary" mat-button>{{ viewer ? 'Join' : 'Create' }} room</button>
     </form>
   </mat-step>
 </mat-horizontal-stepper>

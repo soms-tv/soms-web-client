@@ -1,9 +1,9 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
-import { MatButtonModule } from '@angular/material/button';;
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +18,8 @@ import { AppComponent } from './app.component';
 import { HostComponent } from './host/host.component';
 import { ViewComponent } from './view/view.component';
 import { ChooseComponent } from './choose/choose.component';
+
+import { SharedService } from './shared/shared.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,7 @@ import { ChooseComponent } from './choose/choose.component';
     MatToolbarModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
