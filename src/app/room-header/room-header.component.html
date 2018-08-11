@@ -1,0 +1,24 @@
+<h2 class="header mat-display-2">
+  {{ sharedService.roomName }}
+  <span class="caption-container">
+    <span class="mat-caption">
+      <mat-icon class="header-icon">storage</mat-icon>
+      <button (click)="copyToClipboard(sharedService.serverAddress, 'Copied server address')"
+        mat-button
+        matTooltip="Copy to clipboard">
+         {{ sharedService.serverAddress }}
+      </button>
+    </span>
+    <span *ngIf="sharedService.roomPassword" class="mat-caption">
+      <mat-icon class="header-icon">vpn_key</mat-icon>
+      <button (click)="copyToClipboard(sharedService.roomPassword, 'Copied room password')"
+        mat-button
+        matTooltip="Copy to clipboard"
+        (mouseenter)="showPassword = true;"
+        (mouseleave)="showPassword = false;">
+        {{ showPassword ? sharedService.roomPassword : '********' }}
+      </button>
+    </span>
+  </span>
+</h2>
+<mat-divider></mat-divider>
