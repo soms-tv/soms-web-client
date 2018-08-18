@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { forkJoin } from 'rxjs';
+import { forkJoin, from } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { CryptoService } from './crypto.service';
@@ -101,6 +101,35 @@ describe('CryptoService', () => {
     service.generateRoomKey().subscribe(_roomKey => {
       service.encryptRoom(testMessage).pipe(flatMap(pair => service.decryptRoom(pair[0], pair[1]))).subscribe(decryptedMessage => {
         expect(testMessage).toEqual(new Uint8Array(decryptedMessage));
+        done();
+      });
+    });
+  });
+
+  it('should be able to import a room key', (done: DoneFn) => {
+    from(window.crypto.subtle.generateKey(
+      {
+        name: 'AES-CBC',
+        length: 256
+      },
+      true,
+      ['encrypt', 'decrypt']
+    )).pipe(flatMap(roomKey => window.crypto.subtle.exportKey(
+      'raw',
+      roomKey
+    ))).subscribe(rawRoomKey => {
+      service.importRoomKey(rawRoomKey).subscribe(success => {
+        expect(success).toBeTruthy();
+        expect(service.getRoomKey()).toBeTruthy();
+        done();
+      });
+    });
+  });
+
+  it('should be able to export a room key', (done: DoneFn) => {
+    service.generateRoomKey().subscribe(roomKey => {
+      service.exportRoomKey().subscribe(rawRoomKey => {
+        expect(rawRoomKey).toBeTruthy();
         done();
       });
     });
