@@ -12,7 +12,7 @@ export class ChatMessage implements Message<string> {
   }
 
   encapsulate(message: string): any {
-    const buffer = this.textEncoder.encode(` ${textEncoder}`);
+    const buffer = this.textEncoder.encode(` ${message}`);
     buffer[0] = CHAT_MESSAGE_CODE;
     return buffer;
   }
@@ -22,6 +22,6 @@ export class ChatMessage implements Message<string> {
   }
 
   filter(): (buffer: any) => boolean {
-    return (new Uint8Array(buffer))[0] === CHAT_MESSAGE_CODE;
+    return buffer => (new Uint8Array(buffer))[0] === CHAT_MESSAGE_CODE;
   }
 }
