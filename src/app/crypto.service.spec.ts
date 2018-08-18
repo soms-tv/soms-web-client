@@ -1,4 +1,4 @@
-import { DoneFn, TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
 import { forkJoin } from 'rxjs';
 
@@ -25,7 +25,6 @@ describe('CryptoService', () => {
   });
 
   it('should generate a keypair on demand', (done: DoneFn) => {
-    expect(service.keyPairObservable).toBeTruthy();
     service.getOwnPublicKey().subscribe(publicKey => {
       expect(publicKey).toBeTruthy();
       expect(publicKey.type).toBe('public');
@@ -56,6 +55,19 @@ describe('CryptoService', () => {
           expect(results[0]).not.toBe(results[1]);
           done();
         });
+    });
+  });
+
+  it('should accept valid signatures', (done: DoneFn) => {
+    service.exportPublicKey().subscribe(publicKey => {
+        service.importSenderKey(publicKey, 'self').subscribe(success => {
+        service.sign(testMessage).subscribe(signature => {
+          service.verify(testMessage, signature, 'self').subscribe(valid => {
+            expect(valid).toBeTruthy();
+            done();
+          });
+        });
+      });
     });
   });
 });
