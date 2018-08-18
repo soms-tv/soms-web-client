@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, Observer, fromPromise } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CryptoServiceService {
+export class CryptoService {
   private keyPair: any = null;
   private keyPairObservable: any = null;
   private roomKey: any = null;
@@ -124,11 +125,11 @@ export class CryptoServiceService {
   }
 
   getOwnSigningKey(): Observable<any> {
-    return this.keyPairObservable.map(key => key.privateKey);
+    return this.keyPairObservable.pipe(map(key => key.privateKey));
   }
 
   getOwnPublicKey(): Observable<any> {
-    return this.keyPairObservable.map(key => key.publicKey);
+    return this.keyPairObservable.pipe(map(key => key.publicKey));
   }
 
   /**
@@ -137,13 +138,14 @@ export class CryptoServiceService {
   */
   sign(message: any): Observable<any> {
     return Observable.create((observer: Observer<any>) => {
-      getSigningKey().subscribe(key => {
+      this.getOwnSigningKey().subscribe(key => {
         window.crypto.subtle.sign(
           {
             name: 'ECDSA',
             hash: { name: 'SHA-384' }
           },
-          key
+          key,
+          message
         ).then((signature) => {
           observer.next(signature);
         });
