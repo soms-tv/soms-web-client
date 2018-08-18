@@ -68,6 +68,16 @@ export class CryptoService {
     return this.encrypt(buffer, this.roomKey);
   }
 
+  exportPublicKey(): Observable<any> {
+    return Observable.create((observer: Observer<any>) => {
+      this.getOwnPublicKey().subscribe(publicKey => {
+        window.crypto.subtle.exportKey('raw', publicKey).then(rawKey => {
+          observer.next(rawKey);
+        });
+      });
+    });
+  }
+
   exportRoomKey(): Observable<any> {
     return from(window.crypto.subtle.exportKey(
       'raw',
