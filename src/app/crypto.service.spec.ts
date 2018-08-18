@@ -75,7 +75,6 @@ describe('CryptoService', () => {
     service.exportPublicKey().subscribe(publicKey => {
         service.importSenderKey(publicKey, 'self').subscribe(success => {
         service.sign(testMessage).subscribe(signature => {
-          console.log(signature);
           const view = new Int8Array(signature);
           view[0] = 0;
           view[1] = 0;
@@ -86,6 +85,14 @@ describe('CryptoService', () => {
           });
         });
       });
+    });
+  });
+
+  it('should generate a room key when requested', (done: DoneFn) => {
+    service.generateRoomKey().subscribe(roomKey => {
+      expect(roomKey).toBeTruthy();
+      expect(service.roomKey).toBeTruthy();
+      done();
     });
   });
 });
