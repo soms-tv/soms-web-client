@@ -27,6 +27,8 @@ export class RoomHeaderComponent {
     document.execCommand('copy');
     document.body.removeChild(textarea);
 
-    this.snackBar.open(snackBarMessage);
+    this.snackBar.open(snackBarMessage, 'Dismiss', {
+      duration: 3000
+    });
   }
 }
