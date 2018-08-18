@@ -1,6 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { forkJoin } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 import { CryptoService } from './crypto.service';
 
@@ -93,6 +94,15 @@ describe('CryptoService', () => {
       expect(roomKey).toBeTruthy();
       expect(service.roomKey).toBeTruthy();
       done();
+    });
+  });
+
+  it('should be able to encrypt and decrypt using the room key', (done: DoneFn) => {
+    service.generateRoomKey().subscribe(_roomKey => {
+      service.encryptRoom(testMessage).pipe(flatMap(pair => service.decryptRoom(pair[0], pair[1]))).subscribe(decryptedMessage => {
+        expect(testMessage).toEqual(new Uint8Array(decryptedMessage));
+        done();
+      });
     });
   });
 });
