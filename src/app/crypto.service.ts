@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Observer, fromPromise } from 'rxjs';
+import { Observable, Observer, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -36,7 +36,7 @@ export class CryptoService {
   }
 
   private decrypt(buffer: any, key: any, iv: any): Observable<any> {
-    return fromPromise(window.crypto.subtle.decrypt(
+    return from(window.crypto.subtle.decrypt(
       {
         'name': 'AES-CBC',
         'iv': iv
@@ -52,7 +52,7 @@ export class CryptoService {
 
   private encrypt(buffer: any, key: any): Observable<any[]> {
     const usedIv = window.crypto.getRandomValues(new Uint8Array(16));
-    return fromPromise(window.crypto.subtle.encrypt(
+    return from(window.crypto.subtle.encrypt(
       {
         name: 'AES-CBC',
         iv: usedIv
@@ -69,14 +69,14 @@ export class CryptoService {
   }
 
   exportRoomKey(): Observable<any> {
-    return fromPromise(window.crypto.subtle.exportKey(
+    return from(window.crypto.subtle.exportKey(
       'raw',
       this.roomKey
     ));
   }
 
   importRoomKey(keyBuffer: any): Observable<boolean> {
-    return fromPromise(window.crypto.subtle.importKey(
+    return from(window.crypto.subtle.importKey(
       'raw',
       keyBuffer,
       {
@@ -91,7 +91,7 @@ export class CryptoService {
   }
 
   importSenderKey(keyBuffer: any, sender: string): Observable<boolean> {
-    return fromPromise(window.crypto.subtle.importKey(
+    return from(window.crypto.subtle.importKey(
       'raw',
       keyBuffer,
       {
@@ -110,7 +110,7 @@ export class CryptoService {
   }
 
   generateRoomKey(): Observable<any> {
-    return fromPromise(window.crypto.subtle.generateKey(
+    return from(window.crypto.subtle.generateKey(
       {
         name: 'AES-CBC',
         length: 256
@@ -159,7 +159,7 @@ export class CryptoService {
   */
   verify(message: any, signature: any, sender: string): Observable<boolean> {
     const key = this.senderKeys[sender];
-    return fromPromise(window.crypto.subtle.verify(
+    return from(window.crypto.subtle.verify(
       {
         name: 'ECDSA',
         hash: { name: 'SHA-384' }
