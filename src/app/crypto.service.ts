@@ -18,7 +18,7 @@ export class CryptoService {
     }
     this.keyPairObservable = Observable.create((observer: Observer<any>) => {
       if (this.keyPair !== null) {
-        return this.keyPair;
+        observer.next(this.keyPair);
       } else {
         window.crypto.subtle.generateKey(
           {
@@ -135,11 +135,11 @@ export class CryptoService {
   }
 
   getOwnSigningKey(): Observable<any> {
-    return this.keyPairObservable.pipe(map(key => key.privateKey));
+    return this.keyPairObservable.pipe(map((key: any) => key.privateKey));
   }
 
   getOwnPublicKey(): Observable<any> {
-    return this.keyPairObservable.pipe(map(key => key.publicKey));
+    return this.keyPairObservable.pipe(map((key: any) => key.publicKey));
   }
 
   /**
