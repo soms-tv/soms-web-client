@@ -127,7 +127,10 @@ export class CryptoService {
       },
       true,
       ['encrypt', 'decrypt']
-    ));
+    )).pipe(map(roomKey => {
+      this.roomKey = roomKey;
+      return roomKey;
+    }));
   }
 
   getRoomKey(): any {
