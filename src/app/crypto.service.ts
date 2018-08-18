@@ -35,7 +35,7 @@ export class CryptoService {
     });
   }
 
-  private decrypt(buffer: any, key: any, iv: any): Observable<any> {
+  decrypt(buffer: any, key: any, iv: any): Observable<any> {
     return from(window.crypto.subtle.decrypt(
       {
         'name': 'AES-CBC',
@@ -50,7 +50,7 @@ export class CryptoService {
     return this.decrypt(buffer, this.roomKey, iv);
   }
 
-  private encrypt(buffer: any, key: any): Observable<any[]> {
+  encrypt(buffer: any, key: any): Observable<any[]> {
     const usedIv = window.crypto.getRandomValues(new Uint8Array(16));
     return from(window.crypto.subtle.encrypt(
       {
