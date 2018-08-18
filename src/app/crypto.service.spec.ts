@@ -91,7 +91,7 @@ describe('CryptoService', () => {
 
   it('should generate a room key when requested', (done: DoneFn) => {
     service.generateRoomKey().subscribe(roomKey => {
-      expect(roomKey).toBeTruthy();
+      expect(service.getRoomKey()).toBeTruthy();
       expect(service.roomKey).toBeTruthy();
       done();
     });
