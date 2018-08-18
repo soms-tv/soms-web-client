@@ -70,4 +70,22 @@ describe('CryptoService', () => {
       });
     });
   });
+
+  it('should reject invalid signatures', (done: DoneFn) => {
+    service.exportPublicKey().subscribe(publicKey => {
+        service.importSenderKey(publicKey, 'self').subscribe(success => {
+        service.sign(testMessage).subscribe(signature => {
+          console.log(signature);
+          const view = new Int8Array(signature);
+          view[0] = 0;
+          view[1] = 0;
+          view[20] = 0;
+          service.verify(testMessage, signature, 'self').subscribe(valid => {
+            expect(valid).not.toBeTruthy();
+            done();
+          });
+        });
+      });
+    });
+  });
 });
