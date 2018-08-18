@@ -1,5 +1,7 @@
 import { DoneFn, TestBed, inject } from '@angular/core/testing';
 
+import { forkJoin } from 'rxjs';
+
 import { CryptoService } from './crypto.service';
 
 declare var TextEncoder: any;
@@ -35,6 +37,25 @@ describe('CryptoService', () => {
     service.sign(testMessage).subscribe(signature => {
       expect(signature).toBeTruthy();
       done();
+    });
+  });
+
+  it('should import new signatures for nonregistered senders', (done: DoneFn) => {
+    service.exportPublicKey().subscribe(publicKey => {
+      service.importSenderKey(publicKey, 'self').subscribe(success => {
+        expect(success).toBeTruthy();
+        done();
+      });
+    });
+  });
+
+  it('should reject new signatures if a sender is already registered', (done: DoneFn) => {
+    service.exportPublicKey().subscribe(publicKey => {
+      forkJoin(service.importSenderKey(publicKey, 'self'), service.importSenderKey(publicKey, 'self'))
+        .subscribe(results => {
+          expect(results[0]).not.toBe(results[1]);
+          done();
+        });
     });
   });
 });
