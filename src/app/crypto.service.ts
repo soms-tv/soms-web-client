@@ -59,9 +59,7 @@ export class CryptoService {
       },
       key,
       buffer
-    ).then(ciphertext => {
-      return [ciphertext, usedIv];
-    }));
+    )).pipe(map(ciphertext => [ciphertext, usedIv]));
   }
 
   encryptRoom(buffer: any): Observable<any> {
