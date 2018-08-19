@@ -1,5 +1,5 @@
 export interface Message<T> {
-  encapsulate(message: T): any;
-  decapsulate(buffer: any): T;
-  filter(): (buffer: any) => boolean;
+  static fromBuffer(buffer: any): Message<T>;
+  static is(buffer: any): boolean;
+  toBuffer(): any;
 }
