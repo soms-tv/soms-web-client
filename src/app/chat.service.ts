@@ -13,10 +13,17 @@ export class ChatService {
   private chatMessageObservable: Observable<ChatMessage>;
 
   constructor(private sharedService: SharedService) {
-    this.chatMessageObservable = this.sharedService.getRoomMessages();
+    this.chatMessageObservable = this.sharedService.getRoomMessages().pipe(
+      filter(ChatMessage.is),
+      map(ChatMessage.fromBuffer)
+    );
   }
 
   getChatMessages(): Observable<ChatMessage> {
     return this.chatMessageObservable;
+  }
+
+  sendMessage(message: ChatMessage) {
+    this.sharedService.sendRoomMessage(message);
   }
 }
