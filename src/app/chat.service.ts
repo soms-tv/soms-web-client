@@ -24,6 +24,6 @@ export class ChatService {
   }
 
   sendMessage(message: ChatMessage) {
-    this.sharedService.sendRoomMessage(message);
+    this.sharedService.sendRoomMessage(message.toBuffer());
   }
 }
