@@ -22,9 +22,12 @@ export class SharedService {
   private textDecoder: any;
 
   constructor(private cryptoService: CryptoService) {
-    this.socketObservable = webSocket(this.socket);
     this.textEncoder = new TextEncoder();
     this.textDecoder = new TextDecoder();
+  }
+
+  createObservable() {
+    this.socketObservable = webSocket(this.socket);
   }
 
   getHandshakeMessages(): Observable<any> {
